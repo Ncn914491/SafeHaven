@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "safehaven-dataconnect"
+location: "asia-south1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "\tfdcdb"
+      cloudSql:
+        instanceId: "safehaven-dataconnect-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

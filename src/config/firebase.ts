@@ -1,28 +1,26 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getDatabase } from 'firebase/database';
-import { getStorage } from 'firebase/storage';
-import { getMessaging, isSupported } from 'firebase/messaging';
-import Constants from 'expo-constants';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
+import { getMessaging, isSupported } from "firebase/messaging";
 
-// Firebase configuration
-// These values should be stored in .env file
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  apiKey: "AIzaSyBJBOv1llXnTx1fUJG8DZpvEK3lzt5eV0s",
+  authDomain: "safehaven-458303.firebaseapp.com",
+  projectId: "safehaven-458303",
+  storageBucket: "safehaven-458303.firebasestorage.app",
+  messagingSenderId: "7364434746",
+  appId: "1:7364434746:web:bf7dbfe449ab867443ce03",
+  measurementId: "G-BB47XH4BBD"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase services
+const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const database = getDatabase(app);
@@ -38,4 +36,4 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export { app, auth, firestore, database, storage, messaging };
+export { app, analytics, auth, firestore, database, storage, messaging };

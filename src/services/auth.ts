@@ -1,9 +1,11 @@
+/** This file exports the functions that manage user authentication */
 import { 
   PhoneAuthProvider, 
   signInWithCredential, 
   signInAnonymously,
   signOut as firebaseSignOut,
   onAuthStateChanged,
+  GoogleAuthProvider,
   User
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
@@ -82,10 +84,53 @@ export const confirmPhoneAuth = async (verificationId: string, verificationCode:
 };
 
 /**
- * Signs in anonymously for emergency mode
- * @returns The anonymous user
+ * Signs in with Google
+ * @returns The Google user
  */
-export const signInEmergencyMode = async () => {
+export const signInWithGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithCredential(auth, provider);
+
+    // Save user data to Firestore if it's a new user
+    const userDoc = await getDoc(doc(firestore, 'users', userCredential.user.uid));
+    
+    if (!userDoc.exists()) {
+      await setDoc(doc(firestore, 'users', userCredential.user.uid), {
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName,
+        photoURL: userCredential.user.photoURL,
+        createdAt: new Date(),
+        lastLogin: new Date(),
+        status: 'unknown',
+        lastLocation: null,
+        emergencyContacts: []
+      });
+    } else {
+      // Update last login time
+      await updateDoc(doc(firestore, 'users', userCredential.user.uid), {
+        lastLogin: new Date()
+      });
+    }
+    
+    // Save auth state to AsyncStorage
+    await AsyncStorage.setItem(USER_AUTH_KEY, JSON.stringify({
+      uid: userCredential.user.uid,
+      email: userCredential.user.email,
+      isAnonymous: userCredential.user.isAnonymous
+    }));
+
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error signing in with Google:', error);
+    throw error;
+  }
+}
+/** 
+  * Signs in as a guest user
+  * @returns The anonymous user
+  */
+export const signInAsGuest = async () => {
   try {
     const userCredential = await signInAnonymously(auth);
     
@@ -106,7 +151,7 @@ export const signInEmergencyMode = async () => {
     
     return userCredential.user;
   } catch (error) {
-    console.error('Error signing in anonymously:', error);
+    console.error('Error signing in as a guest user:', error);
     throw error;
   }
 };
