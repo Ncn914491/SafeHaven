@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "safehaven-458303"
-  }
+    "default": "safehaven-458303",
+    "SafeHaven": "safehaven-458303"
+  },
+  "targets": {},
+  "etags": {}
 }
