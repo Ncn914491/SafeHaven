@@ -12,7 +12,7 @@ import EmergencyModeScreen from '../screens/auth/EmergencyModeScreen';
 
 // Main Screens
 import HomeScreen from '../screens/main/HomeScreen';
-import AlertsScreen from '../screens/main/AlertsScreen';
+// import AlertsScreen from '../screens/main/AlertsScreen';
 import MapScreen from '../screens/main/MapScreen';
 import ProfileScreen from '../screens/main/ProfileScreen';
 import SOSScreen from '../screens/main/SOSScreen';
@@ -66,7 +66,7 @@ const MainTabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Alerts" component={AlertsScreen} options={{ headerShown: false }} />
+      {/* <Tab.Screen name="Alerts" component={AlertsScreen} options={{ headerShown: false }} /> */}
       <Tab.Screen name="SOS" component={SOSScreen} options={{ headerShown: false, tabBarLabel: 'SOS' }} />
       <Tab.Screen name="Map" component={MapScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
