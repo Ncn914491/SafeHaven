@@ -8,15 +8,23 @@ import { getMessaging, isSupported } from "firebase/messaging";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Values will be injected at build time by Expo from environment variables prefixed with EXPO_PUBLIC_
+// or at runtime if these are not set during build (less common for web exports, but good fallback)
 const firebaseConfig = {
-  apiKey: "AIzaSyBJBOv1llXnTx1fUJG8DZpvEK3lzt5eV0s",
-  authDomain: "safehaven-458303.firebaseapp.com",
-  projectId: "safehaven-458303",
-  storageBucket: "safehaven-458303.firebasestorage.app",
-  messagingSenderId: "7364434746",
-  appId: "1:7364434746:web:bf7dbfe449ab867443ce03",
-  measurementId: "G-BB47XH4BBD"
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID || "safehaven-463909", // Target Project ID
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
+
+// Validate that essential Firebase config values are present
+if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
+  console.error("Firebase configuration is missing or incomplete. Check your environment variables.");
+  // Optionally, throw an error or render a fallback UI if running in a context where this is critical
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
