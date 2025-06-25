@@ -1,0 +1,60 @@
+# This file tells gcloud which files to ignore when uploading sources.
+# It's good practice to have this, even if Dockerfile and .dockerignore
+# are also used, to ensure consistent behavior.
+
+# Standard ignores:
+.git/
+.gitignore
+.gcloudignore
+
+# Node.js
+node_modules/
+
+# Environment files - these should be managed via Secret Manager or similar
+.env
+.env.*
+*.env
+
+# IDE and editor files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Firebase specific files that might not be needed for this particular Cloud Run deployment
+# .firebaserc
+# firebase.json
+
+# IDX specific files
+.idx/
+
+# Ensure all source code IS included.
+# Explicitly include src and other necessary directories if there were broader ignore patterns.
+# Since there are no broad ignore patterns above that would exclude src,
+# we don't need to explicitly include it with !src or similar.
+
+# Files and directories already handled by .dockerignore for the Docker build context:
+# (listing them here can be for clarity or redundancy if gcloud's ignore logic
+# is separate prior to Docker context creation)
+# Dockerfile
+# .dockerignore
+
+# Build output (if generated locally and not part of source)
+# web-build/
+# dist/
+# build/
+
+# Comment out if functions are part of this deployment unit
+# functions/
+
+# Comment out if dataconnect generated code is needed in the cloud build steps
+# before docker build (e.g. if not committed)
+# dataconnect-generated/
