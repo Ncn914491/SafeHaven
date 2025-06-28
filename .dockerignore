@@ -4,7 +4,7 @@
 .idx
 node_modules
 npm-debug.log
-*.env
+# *.env # We'll create .env during build from build args
 # Add build artifacts if they are not needed in the final image directly
 # e.g., if using multi-stage builds and intermediate stages produce them
 # web-build # We need this for the serve command in the final stage

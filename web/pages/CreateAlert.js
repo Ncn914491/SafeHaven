@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { ref, push, set } from 'firebase/database';
 import { database } from '../../src/config/firebase';
 import { AlertType, AlertSeverity } from '../../src/services/alerts';
 import GoogleMapReact from 'google-map-react';
+import MapMarker from '../components/MapMarker';
 
-const CreateAlert = () => {
-  const navigate = useNavigate();
+const CreateAlert = ({ onNavigate }) => {
   const auth = getAuth();
   
   const [title, setTitle] = useState('');
@@ -70,7 +69,7 @@ const CreateAlert = () => {
       });
       
       // Navigate back to alerts page
-      navigate('/alerts');
+      if (onNavigate) onNavigate('alerts');
     } catch (error) {
       console.error('Error creating alert:', error);
       setError('Failed to create alert: ' + error.message);
@@ -90,9 +89,9 @@ const CreateAlert = () => {
       <div className="page-header">
         <h1>Create New Alert</h1>
         <div className="header-actions">
-          <button 
+          <button
             className="btn btn-secondary"
-            onClick={() => navigate('/alerts')}
+            onClick={() => onNavigate && onNavigate('alerts')}
           >
             Cancel
           </button>
@@ -179,7 +178,7 @@ const CreateAlert = () => {
           <label>Location (Click on map to set)*</label>
           <div className="map-container">
             <GoogleMapReact
-              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+              bootstrapURLKeys={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY }}
               defaultCenter={{
                 lat: location.latitude,
                 lng: location.longitude
@@ -199,10 +198,10 @@ const CreateAlert = () => {
         </div>
         
         <div className="form-actions">
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="btn btn-secondary"
-            onClick={() => navigate('/alerts')}
+            onClick={() => onNavigate && onNavigate('alerts')}
           >
             Cancel
           </button>

@@ -23,6 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build CSS
+        run: npm run build:css-prod
+
+      - name: Run tests
+        run: npm test -- --watchAll=false
+
       - name: Build web app
         run: npm run build:web
         env:
@@ -35,6 +41,9 @@ jobs:
           REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           REACT_APP_FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
           REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+
+      - name: Copy custom HTML template
+        run: cp web/index.html dist/index.html
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0

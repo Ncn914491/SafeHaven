@@ -1,0 +1,79 @@
+steps:
+  # Step 1: Build the Docker image with build arguments
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_API_KEY=AIzaSyD9yWrY2xO5oS59_mEaGthe5VnAtDtWpAM'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=safehaven-463909.firebaseapp.com'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_PROJECT_ID=safehaven-463909'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=safehaven-463909.appspot.com'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=441114248968'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_APP_ID=1:441114248968:web:d4f1d612fa335733380ebd'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=G-WJN6VFZ3CR'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_FIREBASE_DATABASE_URL=https://safehaven-463909-default-rtdb.firebaseio.com'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSyBB-8425qrfGJvEy6eqHJZxGo2_8kNVev4'
+      - '--build-arg'
+      - 'EXPO_PUBLIC_DEFAULT_ALERT_RADIUS_KM=10'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:latest'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:$BUILD_ID'
+      - '.'
+
+  # Step 2: Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:latest'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:$BUILD_ID'
+
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'safehaven-frontend'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:latest'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8080'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '2'
+      - '--cpu'
+      - '1'
+      - '--memory'
+      - '512Mi'
+
+# Images to be pushed to registry
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:latest'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/safehaven-repo/safehaven-app:$BUILD_ID'
+
+# Build options
+options:
+  machineType: 'E2_HIGHCPU_8'
+  diskSizeGb: 100
+
+# Timeout for the entire build
+timeout: '1200s'

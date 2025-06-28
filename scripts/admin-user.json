@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "localId": "admin-user-001",
+      "email": "admin@safehaven.local",
+      "emailVerified": true,
+      "passwordHash": "SafeHaven2024!",
+      "displayName": "SafeHaven Administrator",
+      "createdAt": "2025-06-27T12:00:00.000Z",
+      "lastLoginAt": "2025-06-27T12:00:00.000Z",
+      "customAttributes": "{\"admin\":true,\"role\":\"administrator\"}"
+    }
+  ]
+}

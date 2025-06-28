@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation';
 import { sendPhoneVerification } from '../../services/auth';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+// import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { app } from '../../config/firebase';
 
 type PhoneAuthScreenNavigationProp = StackNavigationProp<RootStackParamList, 'PhoneAuth'>;
@@ -24,7 +24,7 @@ const PhoneAuthScreen = () => {
   const navigation = useNavigation<PhoneAuthScreenNavigationProp>();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
-  const recaptchaVerifier = useRef(null);
+  // const recaptchaVerifier = useRef(null);
 
   const handleSendCode = async () => {
     if (!phoneNumber || phoneNumber.length < 10) {
@@ -43,7 +43,7 @@ const PhoneAuthScreen = () => {
       // Send verification code
       const verificationId = await sendPhoneVerification(
         formattedPhoneNumber,
-        recaptchaVerifier.current
+        null // recaptchaVerifier.current
       );
       
       // Navigate to OTP verification screen
@@ -72,11 +72,11 @@ const PhoneAuthScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
       >
-        <FirebaseRecaptchaVerifierModal
+        {/* <FirebaseRecaptchaVerifierModal
           ref={recaptchaVerifier}
           firebaseConfig={app.options}
           attemptInvisibleVerification={true}
-        />
+        /> */}
         
         <View style={styles.content}>
           <Text style={styles.title}>SafeHaven</Text>

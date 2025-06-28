@@ -1,4 +1,47 @@
-# SafeHaven - Cloud-Based Emergency Alert Application
+# SafeHaven - Cloud-Based Emergency Alert Application 🚨
+
+## 🚀 **Recent Critical Fixes & Improvements**
+
+### ✅ **Issues Resolved (Latest Update)**
+
+1. **📦 Package.json Reconstruction**
+   - Fixed corrupted package.json with proper dependencies
+   - Added Express backend support (express, cors, body-parser, dotenv, axios)
+   - Included all necessary dev tools (nodemon, postcss, autoprefixer)
+   - Maintained Expo frontend compatibility
+
+2. **🎨 Tailwind CSS Integration Fixed**
+   - ✅ Fixed Tailwind CSS not rendering properly
+   - ✅ Added proper PostCSS configuration (`postcss.config.js`)
+   - ✅ Implemented responsive design with mobile-first approach
+   - ✅ Added custom CSS classes for layout components
+   - ✅ Fixed CSS build pipeline with proper scripts
+
+3. **📱 Scrolling & Layout Issues Resolved**
+   - ✅ Fixed UI overflow and scrolling problems
+   - ✅ Implemented proper responsive layout with Tailwind
+   - ✅ Added mobile-friendly navigation with hamburger menu
+   - ✅ Fixed content container heights and overflow handling
+   - ✅ Added proper CSS classes: `.scrollable-container`, `.main-layout`, etc.
+
+4. **🔧 Build Process & CI/CD Optimization**
+   - ✅ Added CSS build pipeline with Tailwind CLI
+   - ✅ Fixed GitHub Actions CI/CD compatibility
+   - ✅ Optimized Docker build process with CSS building
+   - ✅ Added proper environment variable handling
+
+### 🛠 **New Scripts Available**
+```bash
+npm run build:css-prod    # Build CSS for production (minified)
+npm run build:css         # Build CSS with watch mode
+npm run dev:server        # Start Express server with nodemon
+npm run server            # Start Express server
+```
+
+### 🌐 **Live Application**
+**Production URL:** https://safehaven-frontend-441114248968.us-central1.run.app
+
+---
 
 ## 1. Project Overview
 

@@ -13,20 +13,20 @@ import EmergencyModeScreen from '../screens/auth/EmergencyModeScreen';
 // Main Screens
 import HomeScreen from '../screens/main/HomeScreen';
 // import AlertsScreen from '../screens/main/AlertsScreen';
-import MapScreen from '../screens/main/MapScreen';
-import ProfileScreen from '../screens/main/ProfileScreen';
+// import MapScreen from '../screens/main/MapScreen';
+// import ProfileScreen from '../screens/main/ProfileScreen';
 import SOSScreen from '../screens/main/SOSScreen';
 
 // Detail Screens
 import AlertDetailScreen from '../screens/details/AlertDetailScreen';
-import ShelterDetailScreen from '../screens/details/ShelterDetailScreen';
-import ReportDetailScreen from '../screens/details/ReportDetailScreen';
-import GroupDetailScreen from '../screens/details/GroupDetailScreen';
+// import ShelterDetailScreen from '../screens/details/ShelterDetailScreen';
+// import ReportDetailScreen from '../screens/details/ReportDetailScreen';
+// import GroupDetailScreen from '../screens/details/GroupDetailScreen';
 
 // Form Screens
-import CreateReportScreen from '../screens/forms/CreateReportScreen';
-import CreateGroupScreen from '../screens/forms/CreateGroupScreen';
-import AddContactScreen from '../screens/forms/AddContactScreen';
+// import CreateReportScreen from '../screens/forms/CreateReportScreen';
+// import CreateGroupScreen from '../screens/forms/CreateGroupScreen';
+// import AddContactScreen from '../screens/forms/AddContactScreen';
 
 // Auth Service
 import { getCurrentUser } from '../services/auth';
@@ -68,8 +68,8 @@ const MainTabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       {/* <Tab.Screen name="Alerts" component={AlertsScreen} options={{ headerShown: false }} /> */}
       <Tab.Screen name="SOS" component={SOSScreen} options={{ headerShown: false, tabBarLabel: 'SOS' }} />
-      <Tab.Screen name="Map" component={MapScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+      {/* <Tab.Screen name="Map" component={MapScreen} options={{ headerShown: false }} /> */}
+      {/* <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} /> */}
     </Tab.Navigator>
   );
 };
@@ -119,36 +119,36 @@ const AppNavigator = () => {
               component={AlertDetailScreen} 
               options={{ headerShown: true, title: 'Alert Details' }} 
             />
-            <Stack.Screen 
-              name="ShelterDetail" 
-              component={ShelterDetailScreen} 
-              options={{ headerShown: true, title: 'Shelter Information' }} 
+            {/* <Stack.Screen
+              name="ShelterDetail"
+              component={ShelterDetailScreen}
+              options={{ headerShown: true, title: 'Shelter Information' }}
             />
-            <Stack.Screen 
-              name="ReportDetail" 
-              component={ReportDetailScreen} 
-              options={{ headerShown: true, title: 'Report Details' }} 
+            <Stack.Screen
+              name="ReportDetail"
+              component={ReportDetailScreen}
+              options={{ headerShown: true, title: 'Report Details' }}
             />
-            <Stack.Screen 
-              name="GroupDetail" 
-              component={GroupDetailScreen} 
-              options={{ headerShown: true, title: 'Group Details' }} 
+            <Stack.Screen
+              name="GroupDetail"
+              component={GroupDetailScreen}
+              options={{ headerShown: true, title: 'Group Details' }}
             />
-            <Stack.Screen 
-              name="CreateReport" 
-              component={CreateReportScreen} 
-              options={{ headerShown: true, title: 'Report Suspicious Activity' }} 
+            <Stack.Screen
+              name="CreateReport"
+              component={CreateReportScreen}
+              options={{ headerShown: true, title: 'Report Suspicious Activity' }}
             />
-            <Stack.Screen 
-              name="CreateGroup" 
-              component={CreateGroupScreen} 
-              options={{ headerShown: true, title: 'Create Family Group' }} 
+            <Stack.Screen
+              name="CreateGroup"
+              component={CreateGroupScreen}
+              options={{ headerShown: true, title: 'Create Family Group' }}
             />
-            <Stack.Screen 
-              name="AddContact" 
-              component={AddContactScreen} 
-              options={{ headerShown: true, title: 'Add Emergency Contact' }} 
-            />
+            <Stack.Screen
+              name="AddContact"
+              component={AddContactScreen}
+              options={{ headerShown: true, title: 'Add Emergency Contact' }}
+            /> */}
           </>
         )}
       </Stack.Navigator>
