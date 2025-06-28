@@ -134,153 +134,171 @@ const Alerts = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Emergency Alerts</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage and monitor emergency alerts across India
-          </p>
+    <div className="space-y-8 p-0"> {/* Removed default padding from parent, will add to sections */}
+      {/* Header Section */}
+      <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Emergency Alerts</h1>
+            <p className="mt-1.5 text-sm text-gray-600">
+              View, manage, and monitor all emergency alerts.
+            </p>
+          </div>
+          {/* Can add a "Create New Alert" button here if needed, linking to CreateAlert page */}
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-        <LocationFilter
-          onLocationChange={handleLocationChange}
-          selectedState={selectedState}
-          selectedDistrict={selectedDistrict}
-        />
-
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="all">All Alerts ({alerts.length})</option>
-          <option value="active">Active ({alerts.filter(a => a.isActive).length})</option>
-          <option value="inactive">Inactive ({alerts.filter(a => !a.isActive).length})</option>
-        </select>
+      {/* Filters Section */}
+      <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200 space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-3">Filter Alerts</h2>
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+          <div className="flex-grow w-full md:w-auto">
+            <LocationFilter
+              onLocationChange={handleLocationChange}
+              selectedState={selectedState}
+              selectedDistrict={selectedDistrict}
+            />
+          </div>
+          <div className="w-full md:w-auto md:min-w-[200px]">
+            <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select
+              id="status-filter"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
+            >
+              <option value="all">All Alerts ({alerts.length})</option>
+              <option value="active">Active ({alerts.filter(a => a.isActive).length})</option>
+              <option value="inactive">Inactive ({alerts.filter(a => !a.isActive).length})</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span className="text-sm text-red-800">{error}</span>
+        <div className="bg-danger-50 border-l-4 border-danger-500 text-danger-700 p-4 rounded-md shadow">
+          <div className="flex">
+            <div className="py-1">
+              <svg className="fill-current h-6 w-6 text-danger-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM9 5v6h2V5H9zm0 8v2h2v-2H9z"/></svg>
+            </div>
+            <div>
+              <p className="font-bold">Error Loading Alerts</p>
+              <p className="text-sm">{error}</p>
+            </div>
           </div>
         </div>
       )}
 
       {/* Results Summary */}
       {!error && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span className="text-sm text-blue-800">
-              Showing {filteredAlerts.length} of {alerts.length} alerts
+        <div className="bg-primary-50 border-l-4 border-primary-500 text-primary-700 p-4 rounded-md shadow">
+           <div className="flex">
+            <div className="py-1">
+              <svg className="fill-current h-6 w-6 text-primary-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM11 9V5H9v6h4v-2H11zM9 15v-2h2v2H9z"/></svg>
+            </div>
+            <div>
+              <p className="font-bold">
+                Displaying {filteredAlerts.length} of {alerts.length} total alerts.
+              </p>
               {(selectedState || selectedDistrict) && (
-                <span className="ml-1">
-                  for {selectedDistrict ? `${selectedDistrict}, ` : ''}{selectedState || 'All India'}
-                </span>
+                <p className="text-sm">
+                  Filtered by location: {selectedDistrict ? `${selectedDistrict}, ` : ''}{selectedState || 'All India'}
+                </p>
               )}
-            </span>
+            </div>
           </div>
         </div>
       )}
 
       {/* Alerts List */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {filteredAlerts.length > 0 ? (
           filteredAlerts.map((alert) => (
-            <div key={alert.id} className={`bg-white rounded-lg shadow-sm border-l-4 ${
-              alert.isActive ? 'border-green-500' : 'border-gray-300'
-            } hover:shadow-md transition-shadow`}>
+            <div key={alert.id} className={`bg-white rounded-xl shadow-lg border-l-4 ${
+              alert.isActive ? 'border-success-500' : 'border-gray-400' // Using success color for active
+            } hover:shadow-2xl transition-shadow duration-300 ease-in-out`}>
               <div className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <span className="text-2xl">{getTypeIcon(alert.type)}</span>
-                      <h3 className="text-lg font-semibold text-gray-900">{alert.title}</h3>
+                <div className="flex flex-col sm:flex-row items-start justify-between">
+                  <div className="flex-1 mb-4 sm:mb-0">
+                    <div className="flex items-center space-x-3.5 mb-2.5">
+                      <span className="text-3xl">{getTypeIcon(alert.type)}</span>
+                      <h3 className="text-xl font-bold text-gray-800 group-hover:text-primary-700 transition-colors">{alert.title}</h3>
                     </div>
 
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getSeverityColor(alert.severity)}`}>
-                        {alert.severity?.toUpperCase() || 'UNKNOWN'}
+                    <div className="flex flex-wrap gap-2.5 mb-3">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm border ${getSeverityColor(alert.severity)}`}>
+                        {alert.severity || 'UNKNOWN'}
                       </span>
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {alert.type?.replace('_', ' ').toUpperCase()}
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm bg-primary-100 text-primary-700 border border-primary-200">
+                        {alert.type?.replace('_', ' ') || 'GENERAL'}
                       </span>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm border ${
                         alert.isActive
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-800'
+                          ? 'bg-success-100 text-success-700 border-success-200'
+                          : 'bg-gray-100 text-gray-700 border-gray-200'
                       }`}>
-                        {alert.isActive ? '🟢 ACTIVE' : '⚫ INACTIVE'}
+                        <span className={`w-2 h-2 rounded-full mr-2 ${alert.isActive ? 'bg-success-500 animate-pulse' : 'bg-gray-500'}`}></span>
+                        {alert.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex space-x-2 ml-4">
+                  <div className="flex space-x-2.5 self-start sm:self-center">
                     <button
                       onClick={() => handleToggleAlert(alert.id, alert.isActive)}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-                        alert.isActive
-                          ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                          : 'bg-green-100 text-green-800 hover:bg-green-200'
-                      }`}
+                      className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-1
+                        ${alert.isActive
+                          ? 'bg-warning-500 hover:bg-warning-600 text-white focus:ring-warning-400'
+                          : 'bg-success-500 hover:bg-success-600 text-white focus:ring-success-400'
+                        }`}
                     >
                       {alert.isActive ? '⏸️ Deactivate' : '▶️ Activate'}
                     </button>
                     <button
                       onClick={() => handleDeleteAlert(alert.id)}
-                      className="px-3 py-1.5 text-sm font-medium text-red-800 bg-red-100 rounded-lg hover:bg-red-200 transition-colors"
+                      className="px-4 py-2 text-sm font-semibold text-white bg-danger-500 hover:bg-danger-600 rounded-lg transition-all duration-150 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-danger-400"
                     >
                       🗑️ Delete
                     </button>
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <p className="text-gray-700 mb-3">{alert.description}</p>
+                <div className="mt-5 border-t border-gray-200 pt-5">
+                  <p className="text-gray-700 mb-4 text-sm leading-relaxed">{alert.description}</p>
 
                   {alert.location && (
-                    <div className="flex items-center text-sm text-gray-600 mb-3">
-                      <span className="mr-2">📍</span>
-                      <span>
+                    <div className="flex items-center text-sm text-gray-600 mb-3 p-3 bg-gray-50 rounded-md border border-gray-200">
+                      <span className="mr-2.5 text-lg">📍</span>
+                      <span className="font-medium">Location: </span>
+                      <span className="ml-1">
                         {alert.location.address ||
-                         `${alert.location.state || ''} ${alert.location.district || ''} (${alert.location.latitude}, ${alert.location.longitude})`}
+                         `${alert.location.state || ''}, ${alert.location.district || ''} (Lat: ${alert.location.latitude?.toFixed(4)}, Lon: ${alert.location.longitude?.toFixed(4)})`}
                       </span>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 text-sm text-gray-600">
                     <div>
-                      <span className="font-medium">Created:</span>
-                      <span className="ml-1">{formatDate(alert.createdAt)}</span>
+                      <span className="font-semibold text-gray-700">Created:</span>
+                      <span className="ml-1.5">{formatDate(alert.createdAt)}</span>
                     </div>
                     {alert.updatedAt && (
                       <div>
-                        <span className="font-medium">Updated:</span>
-                        <span className="ml-1">{formatDate(alert.updatedAt)}</span>
+                        <span className="font-semibold text-gray-700">Updated:</span>
+                        <span className="ml-1.5">{formatDate(alert.updatedAt)}</span>
                       </div>
                     )}
                     {alert.expiresAt && (
                       <div>
-                        <span className="font-medium">Expires:</span>
-                        <span className="ml-1">{formatDate(alert.expiresAt)}</span>
+                        <span className="font-semibold text-gray-700">Expires:</span>
+                        <span className="ml-1.5">{formatDate(alert.expiresAt)}</span>
                       </div>
                     )}
                     {alert.radius && (
                       <div>
-                        <span className="font-medium">Radius:</span>
-                        <span className="ml-1">{alert.radius} km</span>
+                        <span className="font-semibold text-gray-700">Impact Radius:</span>
+                        <span className="ml-1.5">{alert.radius} km</span>
                       </div>
                     )}
                   </div>
@@ -289,17 +307,19 @@ const Alerts = () => {
             </div>
           ))
         ) : (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🚨</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No alerts found</h3>
-            <p className="text-gray-500">
+          <div className="text-center py-16 bg-white rounded-xl shadow-lg border border-gray-200">
+             <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            <h3 className="mt-5 text-xl font-semibold text-gray-800 mb-2">No Alerts Found</h3>
+            <p className="text-gray-500 max-w-md mx-auto">
               {filter === 'active'
-                ? 'No active alerts at this time.'
+                ? 'There are currently no active alerts matching your criteria.'
                 : filter === 'inactive'
-                ? 'No inactive alerts found.'
+                ? 'No inactive alerts found with the current filters.'
                 : (selectedState || selectedDistrict)
-                ? `No alerts found for ${selectedDistrict ? `${selectedDistrict}, ` : ''}${selectedState || 'selected location'}.`
-                : 'No alerts have been created yet.'}
+                ? `No alerts found for the selected location: ${selectedDistrict ? `${selectedDistrict}, ` : ''}${selectedState || 'All India'}. Try adjusting your filters.`
+                : 'No alerts have been created yet, or none match your current filter settings.'}
             </p>
           </div>
         )}

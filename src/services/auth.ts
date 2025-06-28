@@ -288,30 +288,45 @@ export const signInWithGoogle = async (): Promise<User> => {
       include_granted_scopes: 'true'
     });
 
-    console.log('Initiating Google Sign-In with popup...');
+    console.log('[Auth] Initiating Google Sign-In with popup...');
 
     // Try popup first, fallback to redirect if it fails
     let userCredential;
     try {
+      console.log('[Auth] Calling signInWithPopup...');
       userCredential = await signInWithPopup(auth, provider);
+      console.log('[Auth] signInWithPopup promise resolved. User:', userCredential?.user?.email);
     } catch (popupError: any) {
-      console.log('Popup failed, trying redirect method:', popupError.code);
+      console.error('[Auth] signInWithPopup failed:', popupError);
+      console.error('[Auth] Popup Error Code:', popupError.code);
+      console.error('[Auth] Popup Error Message:', popupError.message);
 
       // If popup fails due to blocking or other issues, try redirect
       if (popupError.code === 'auth/popup-blocked' ||
           popupError.code === 'auth/popup-closed-by-user' ||
           popupError.code === 'auth/cancelled-popup-request') {
 
-        console.log('Using redirect method for Google Sign-In...');
-        await signInWithRedirect(auth, provider);
-        // The redirect will handle the rest, so we return here
-        // The actual sign-in completion will be handled by handleRedirectResult
-        throw new Error('REDIRECT_IN_PROGRESS');
+        console.log('[Auth] Popup specific error, attempting redirect method for Google Sign-In...');
+        try {
+          await signInWithRedirect(auth, provider);
+          console.log('[Auth] signInWithRedirect initiated.');
+          // The redirect will handle the rest, so we throw an error to stop further execution in this path.
+          throw new Error('REDIRECT_IN_PROGRESS');
+        } catch (redirectError: any) {
+          console.error('[Auth] signInWithRedirect failed:', redirectError);
+          throw redirectError; // Re-throw the error from signInWithRedirect
+        }
       }
+      // For other errors, re-throw the original popupError
       throw popupError;
     }
 
-    console.log('Google Sign-In successful:', userCredential.user.email);
+    if (!userCredential || !userCredential.user) {
+      console.error('[Auth] Google Sign-In did not return a user credential.');
+      throw new Error('Google Sign-In failed to return user credential.');
+    }
+
+    console.log('[Auth] Google Sign-In successful via popup. User:', userCredential.user.email);
 
     // Get additional user info from the credential
     const credential = GoogleAuthProvider.credentialFromResult(userCredential);

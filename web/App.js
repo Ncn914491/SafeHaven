@@ -143,15 +143,19 @@ const App = () => {
             />
           </div>
 
-          <div className="content-layout">
+          {/* Flex container for Header and Main Content Area */}
+          {/* Ensure this div allows the main content to grow and scroll */}
+          <div className="content-layout flex flex-col flex-grow h-screen overflow-hidden">
             <Header
               user={user}
               userProfile={userProfile}
               onLogout={handleLogout}
               onMenuClick={() => setSidebarOpen(!sidebarOpen)}
             />
-            <main className="page-content scrollable-container bg-gray-50">
-              <div className="max-w-7xl mx-auto">
+            {/* Main content area that should scroll */}
+            <main className="page-content flex-grow overflow-y-auto bg-gray-50 p-4 sm:p-6 lg:p-8">
+              {/* Centering and max-width container for the content itself */}
+              <div className="max-w-7xl mx-auto w-full">
                 <div className="page-wrapper">
                   {renderCurrentPage()}
                 </div>

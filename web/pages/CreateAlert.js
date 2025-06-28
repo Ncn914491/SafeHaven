@@ -84,133 +84,144 @@ const CreateAlert = ({ onNavigate }) => {
     </div>
   );
   
+  // Simple Map Marker Component - can be enhanced
+  const StyledMapMarker = () => (
+    <div className="w-8 h-8 -translate-x-1/2 -translate-y-full">
+      <span className="absolute inset-0 flex items-center justify-center text-3xl text-red-500 animate-pulse">📍</span>
+    </div>
+  );
+
   return (
-    <div className="create-alert-container">
-      <div className="page-header">
-        <h1>Create New Alert</h1>
-        <div className="header-actions">
+    <div className="space-y-8 p-0">
+      {/* Page Header */}
+      <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Create New Emergency Alert</h1>
+            <p className="mt-1.5 text-sm text-gray-600">Fill in the details below to issue a new alert.</p>
+          </div>
           <button
-            className="btn btn-secondary"
             onClick={() => onNavigate && onNavigate('alerts')}
+            className="mt-4 sm:mt-0 px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-400 transition-colors"
           >
-            Cancel
+            Cancel & View Alerts
           </button>
         </div>
       </div>
       
-      {error && <div className="alert alert-danger">{error}</div>}
-      
-      <form onSubmit={handleSubmit} className="create-alert-form">
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="title">Alert Title*</label>
+      {/* Form Section */}
+      <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-lg p-6 sm:p-8 border border-gray-200 space-y-6">
+        {error && (
+          <div className="bg-danger-50 border-l-4 border-danger-500 text-danger-700 p-4 rounded-md shadow">
+            <div className="flex">
+              <div className="py-1">
+                <svg className="fill-current h-6 w-6 text-danger-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM9 5v6h2V5H9zm0 8v2h2v-2H9z"/></svg>
+              </div>
+              <div>
+                <p className="font-bold">Error</p>
+                <p className="text-sm">{error}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Alert Title and Type */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Alert Title*</label>
             <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              placeholder="E.g., Flash Flood Warning"
+              type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required
+              placeholder="E.g., Severe Thunderstorm Warning"
+              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
             />
           </div>
-          
-          <div className="form-group">
-            <label htmlFor="type">Alert Type*</label>
+          <div>
+            <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Alert Type*</label>
             <select
-              id="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              required
+              id="type" value={type} onChange={(e) => setType(e.target.value)} required
+              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
             >
-              <option value={AlertType.NATURAL_DISASTER}>Natural Disaster</option>
-              <option value={AlertType.FIRE}>Fire</option>
-              <option value={AlertType.MEDICAL}>Medical</option>
-              <option value={AlertType.SECURITY}>Security</option>
-              <option value={AlertType.INFRASTRUCTURE}>Infrastructure</option>
-              <option value={AlertType.OTHER}>Other</option>
+              {Object.values(AlertType).map(value => (
+                <option key={value} value={value}>{value.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</option>
+              ))}
             </select>
           </div>
         </div>
         
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="severity">Severity*</label>
+        {/* Severity and Expiry */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="severity" className="block text-sm font-medium text-gray-700 mb-1">Severity*</label>
             <select
-              id="severity"
-              value={severity}
-              onChange={(e) => setSeverity(e.target.value)}
-              required
+              id="severity" value={severity} onChange={(e) => setSeverity(e.target.value)} required
+              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
             >
-              <option value={AlertSeverity.LOW}>Low</option>
-              <option value={AlertSeverity.MEDIUM}>Medium</option>
-              <option value={AlertSeverity.HIGH}>High</option>
-              <option value={AlertSeverity.CRITICAL}>Critical</option>
+              {Object.values(AlertSeverity).map(value => (
+                <option key={value} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
+              ))}
             </select>
           </div>
-          
-          <div className="form-group">
-            <label htmlFor="expiry">Expires After (hours)*</label>
+          <div>
+            <label htmlFor="expiry" className="block text-sm font-medium text-gray-700 mb-1">Expires After (hours)*</label>
             <input
-              type="number"
-              id="expiry"
-              value={expiryHours}
-              onChange={(e) => setExpiryHours(Number(e.target.value))}
-              min="1"
-              max="168"
-              required
+              type="number" id="expiry" value={expiryHours} onChange={(e) => setExpiryHours(Number(e.target.value))}
+              min="1" max="168" required
+              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
             />
           </div>
         </div>
         
-        <div className="form-group">
-          <label htmlFor="description">Description*</label>
+        {/* Description */}
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description*</label>
           <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows="4"
-            required
-            placeholder="Provide detailed information about the alert..."
+            id="description" value={description} onChange={(e) => setDescription(e.target.value)}
+            rows="5" required placeholder="Provide detailed information about the alert, affected areas, and recommended actions..."
+            className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow"
           ></textarea>
         </div>
         
-        <div className="form-group">
-          <label>Location (Click on map to set)*</label>
-          <div className="map-container">
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY }}
-              defaultCenter={{
-                lat: location.latitude,
-                lng: location.longitude
-              }}
-              defaultZoom={12}
-              onClick={handleMapClick}
-            >
-              <MapMarker
-                lat={location.latitude}
-                lng={location.longitude}
-              />
-            </GoogleMapReact>
+        {/* Map Location Picker */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Location (Click on map to set)*</label>
+          <div className="h-72 md:h-96 w-full rounded-lg overflow-hidden shadow-sm border border-gray-300 relative">
+            {process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ? (
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY }}
+                center={{ lat: location.latitude, lng: location.longitude }} // Control center through state
+                zoom={10} // Consistent zoom level
+                onClick={handleMapClick}
+                options={{ gestureHandling: 'greedy', disableDoubleClickZoom: true }}
+              >
+                <StyledMapMarker lat={location.latitude} lng={location.longitude} />
+              </GoogleMapReact>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500 p-4">
+                Google Maps API Key is missing. Please configure EXPO_PUBLIC_GOOGLE_MAPS_API_KEY.
+              </div>
+            )}
           </div>
-          <div className="location-coordinates">
-            Latitude: {location.latitude.toFixed(6)}, Longitude: {location.longitude.toFixed(6)}
+          <div className="mt-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-md border border-gray-200">
+            Selected Coordinates: Latitude: <span className="font-semibold">{location.latitude.toFixed(6)}</span>, Longitude: <span className="font-semibold">{location.longitude.toFixed(6)}</span>
           </div>
         </div>
         
-        <div className="form-actions">
+        {/* Form Actions */}
+        <div className="flex items-center justify-end space-x-4 pt-4 border-t border-gray-200">
           <button
             type="button"
-            className="btn btn-secondary"
             onClick={() => onNavigate && onNavigate('alerts')}
+            className="px-6 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-400 transition-colors"
           >
             Cancel
           </button>
           <button 
             type="submit" 
-            className="btn btn-primary"
             disabled={loading}
+            className="px-8 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center"
           >
-            {loading ? 'Creating...' : 'Create Alert'}
+            {loading && <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>}
+            {loading ? 'Creating Alert...' : 'Create Alert'}
           </button>
         </div>
       </form>
